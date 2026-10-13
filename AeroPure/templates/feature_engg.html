@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% set active_page = "feature_engg" %}
+
+{% block title %}Feature Engineering | AeroPure Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <h2>Feature Engineering Roadmap</h2>
+    <p>
+        Based on the insights from EDA, these are the preprocessing steps planned before
+        training a forecasting model.
+    </p>
+    <ul class="roadmap">
+        <li>
+            <div class="step-num">1</div>
+            <div><strong>Handle Missing Values</strong><br>
+            <span>Air-quality sensors drop readings; impute or interpolate gaps in PM2.5, PM10, SO2, NO2, CO, O3, TEMP, PRES, DEWP, RAIN, WSPM per station.</span></div>
+        </li>
+        <li>
+            <div class="step-num">2</div>
+            <div><strong>Encode Categorical Variables</strong><br>
+            <span>Convert wind direction (wd) and station into numeric form (one-hot / cyclical encoding for wind direction).</span></div>
+        </li>
+        <li>
+            <div class="step-num">3</div>
+            <div><strong>Time-Based Features</strong><br>
+            <span>Derive hour-of-day, day-of-week, month, and season from the datetime column to capture daily/seasonal pollution cycles.</span></div>
+        </li>
+        <li>
+            <div class="step-num">4</div>
+            <div><strong>Lag & Rolling Features</strong><br>
+            <span>Create lagged PM2.5 values (t-1, t-24) and rolling averages, since air quality is highly autocorrelated over time.</span></div>
+        </li>
+        <li>
+            <div class="step-num">5</div>
+            <div><strong>Scale Numerical Features</strong><br>
+            <span>Standardize pollutant concentrations and weather variables so they contribute fairly to the model.</span></div>
+        </li>
+        <li>
+            <div class="step-num">6</div>
+            <div><strong>Treat Outliers</strong><br>
+            <span>Review extreme pollutant spikes flagged by the EDA box plots &mdash; some are real pollution events, others are sensor errors.</span></div>
+        </li>
+        <li>
+            <div class="step-num">7</div>
+            <div><strong>Feature Selection</strong><br>
+            <span>Use the correlation heatmap to drop redundant weather/pollutant pairs and keep the strongest predictors of PM2.5.</span></div>
+        </li>
+    </ul>
+</div>
+
+{% endblock %}

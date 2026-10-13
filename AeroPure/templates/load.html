@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% set active_page = "load" %}
+
+{% block title %}Load Data | AeroPure Dashboard{% endblock %}
+
+{% block content %}
+
+{% if error %}
+<div class="card">
+    <h2>Dataset Not Found</h2>
+    <p>{{ error }}</p>
+    <p>Place the 12 <code>PRSA_Data_*.csv</code> site files into the project's <code>Data/</code> folder, then refresh this page.</p>
+</div>
+{% else %}
+
+<div class="card">
+    <h2>Dataset Loading</h2>
+    <p>Loaded via <code>pandas.read_csv()</code> for each site file, then concatenated with a combined <code>datetime</code> column.</p>
+    <div class="dataset-info">
+        <div class="info-box">
+            <h3>{{ shape[0] }}</h3>
+            <p>Rows</p>
+        </div>
+        <div class="info-box">
+            <h3>{{ shape[1] }}</h3>
+            <p>Columns</p>
+        </div>
+        <div class="info-box">
+            <h3>{{ duplicates }}</h3>
+            <p>Duplicate Rows</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Columns</h2>
+    <div class="columns">
+        {% for col in columns %}
+        <span class="column">{{ col }}</span>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="card">
+    <h2>First 5 Records (df.head())</h2>
+    <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    {% for col in columns %}
+                    <th>{{ col }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in head %}
+                <tr>
+                    {% for col in columns %}
+                    <td>{{ row[col] }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Missing Values per Column</h2>
+    <table>
+        <thead>
+            <tr><th>Column</th><th>Missing Count</th></tr>
+        </thead>
+        <tbody>
+            {% for col, count in missing.items() %}
+            {% if count > 0 %}
+            <tr><td>{{ col }}</td><td>{{ count }}</td></tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endif %}
+
+{% endblock %}
